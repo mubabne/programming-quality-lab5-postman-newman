@@ -1,0 +1,143 @@
+(node:35368) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
+(Use `node --trace-deprecation ...` to show where the warning was created)
+newman
+
+Lab 5 - Зориудын FAIL тест
+
+□ 01 Happy path - идэвхтэй оюутан бүртгүүлэх
+└ Setup student B250001
+  PUT http://localhost:3000/students/B250001 [200 OK, 178B, 48ms]
+
+└ Setup course CS501
+  PUT http://localhost:3000/courses/CS501 [200 OK, 178B, 4ms]
+
+└ Амжилттай бүртгэл 201 OK
+  POST http://localhost:3000/registrations [201 Created, 202B, 2ms]
+  1. Зориуд буруу: статус 200
+  √  result нь OK
+  √  registrationID нь тоо
+
+□ 02 Байхгүй оюутан
+└ Setup course CS502
+  PUT http://localhost:3000/courses/CS502 [200 OK, 178B, 2ms]
+
+└ Байхгүй оюутанд ERROR_NO_STUDENT
+  POST http://localhost:3000/registrations [200 OK, 192B, 2ms]
+  √  Статус 200
+  √  result нь ERROR_NO_STUDENT
+
+□ 03 Идэвхгүй оюутан
+└ Setup inactive student B250003
+  PUT http://localhost:3000/students/B250003 [200 OK, 178B, 3ms]
+
+└ Setup course CS503
+  PUT http://localhost:3000/courses/CS503 [200 OK, 178B, 3ms]
+
+└ Идэвхгүй оюутанд ERROR_INACTIVE_STUDENT
+  POST http://localhost:3000/registrations [200 OK, 198B, 3ms]
+  √  Статус 200
+  √  result нь ERROR_INACTIVE_STUDENT
+
+□ 04 Байхгүй хичээл
+└ Setup student B250004
+  PUT http://localhost:3000/students/B250004 [200 OK, 178B, 4ms]
+
+└ Байхгүй хичээлд ERROR_NO_COURSE
+  POST http://localhost:3000/registrations [200 OK, 191B, 3ms]
+  √  Статус 200
+  √  result нь ERROR_NO_COURSE
+
+□ 05 Урьдач нөхцөл огт хангаагүй
+└ Setup student B250005
+  PUT http://localhost:3000/students/B250005 [200 OK, 178B, 3ms]
+
+└ Setup course CS505
+  PUT http://localhost:3000/courses/CS505 [200 OK, 178B, 2ms]
+
+└ Үзээгүй урьдач нөхцөлд ERROR_PREREQUISITES
+  POST http://localhost:3000/registrations [200 OK, 215B, 2ms]
+  √  Статус 200
+  √  result нь ERROR_PREREQUISITES
+  √  missing нь CS201
+
+□ 06 Урьдач нөхцөлийн заримыг хангаагүй
+└ Setup student B250006
+  PUT http://localhost:3000/students/B250006 [200 OK, 178B, 2ms]
+
+└ Setup course CS506
+  PUT http://localhost:3000/courses/CS506 [200 OK, 178B, 3ms]
+
+└ Дутуу урьдач нөхцөлд CS202 буцаах
+  POST http://localhost:3000/registrations [200 OK, 215B, 3ms]
+  √  Статус 200
+  √  result нь ERROR_PREREQUISITES
+  √  missing нь зөвхөн CS202
+
+□ 07 Давхар алдаа - оюутан ба хичээл байхгүй
+└ Давхар алдаанд ERROR_NO_STUDENT түрүүлнэ
+  POST http://localhost:3000/registrations [200 OK, 192B, 3ms]
+  √  Статус 200
+  √  Оюутны алдаа түрүүлнэ
+
+□ 08 Хязгаар - урьдач нөхцөлгүй хичээл
+└ Setup student B250008 with empty coursesTaken
+  PUT http://localhost:3000/students/B250008 [200 OK, 178B, 2ms]
+
+└ Setup course CS508 with no prerequisites
+  PUT http://localhost:3000/courses/CS508 [200 OK, 178B, 3ms]
+
+└ Хоосон массивуудтай бүртгэл амжилттай
+  POST http://localhost:3000/registrations [201 Created, 202B, 2ms]
+  √  Статус 201
+  √  result нь OK
+  √  registrationID нь тоо
+
+□ 09 Хязгаар - courseID талбар дутуу
+└ Setup student B250009
+  PUT http://localhost:3000/students/B250009 [200 OK, 178B, 1ms]
+
+└ courseID дутуу үед ERROR_BAD_REQUEST
+  POST http://localhost:3000/registrations [400 Bad Request, 202B, 2ms]
+  √  Статус 400
+  √  result нь ERROR_BAD_REQUEST
+
+□ 10 Хязгаар - буруу JSON
+└ Буруу JSON үед ERROR_BAD_JSON
+  POST http://localhost:3000/registrations [400 Bad Request, 199B, 3ms]
+  √  Статус 400
+  √  result нь ERROR_BAD_JSON
+
+□ 11 Нийтийн API - JSONPlaceholder
+└ GET users - 3 oracle
+  GET https://jsonplaceholder.typicode.com/users [200 OK, 6.6kB, 726ms]
+  √  Статус 200
+  √  Хариу массив
+  √  Эхний хэрэглэгч Leanne Graham
+
+┌─────────────────────────┬───────────────────┬───────────────────┐
+│                         │          executed │            failed │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              iterations │                 1 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│                requests │                24 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│            test-scripts │                11 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│      prerequest-scripts │                 0 │                 0 │
+├─────────────────────────┼───────────────────┼───────────────────┤
+│              assertions │                27 │                 1 │
+├─────────────────────────┴───────────────────┴───────────────────┤
+│ total run duration: 1253ms                                      │
+├─────────────────────────────────────────────────────────────────┤
+│ total data received: 6.19kB (approx)                            │
+├─────────────────────────────────────────────────────────────────┤
+│ average response time: 34ms [min: 1ms, max: 726ms, s.d.: 144ms] │
+└─────────────────────────────────────────────────────────────────┘
+
+[31m  # [39m[31m failure        [39m[31m detail                                                                         [39m
+[90m    [39m[90m                [39m[90m                                                                                [39m
+ 1.  AssertionError  Зориуд буруу: статус 200                                                       
+                     expected response to have status code 200 but got 201                          
+                     at assertion:0 in test-script                                                  
+                     inside "01 Happy path - идэвхтэй оюутан бүртгүүлэх / Амжилттай бүртгэл 201 OK" 
+exit=1
