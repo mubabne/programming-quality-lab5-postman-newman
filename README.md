@@ -15,6 +15,15 @@
 - Postman Collection Schema `v2.1.0`
 - Локал API: `http://localhost:3000`
 
+Хувилбар шалгасан командын гаралт:
+
+```text
+PS> node -v
+v24.11.1
+PS> newman -v
+6.2.2
+```
+
 ## Файлын бүтэц
 
 - `server.js` — багшийн өгсөн локал REST API
